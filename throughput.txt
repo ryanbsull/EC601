@@ -1,0 +1,8 @@
+VIRTUALIZED MEMCACHED THROUGHPUT
+
+Run #      Throughput (KB/s)
+-------  -------------------
+run3                 5100.86
+run2                 5080.63
+run1                 4639.79
+run0                 4727.86
