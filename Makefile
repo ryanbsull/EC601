@@ -85,4 +85,5 @@ kill_server:
 	ssh $(TGT) "killall memcached"
 	ssh $(TGT) "rm -f ~/memcached"
 
-test: tgt_info build_app app_info init_server stress_server kill_server
+#test: tgt_info build_app app_info init_server stress_server kill_server
+test: tgt_info build_app app_info stress_server

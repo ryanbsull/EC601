@@ -1,0 +1,1 @@
+BOOT_IMAGE=(hd0,msdos1)/vmlinuz-5.14.0-symbiote+ root=/dev/mapper/fedora_fedora-root ro rd.lvm.lv=fedora_fedora/root console=ttyS0 mitigations=off isolcpus=0 nosmep nosmap
