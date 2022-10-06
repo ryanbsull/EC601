@@ -62,6 +62,20 @@ init_server:$(MEMCACHED_APP)
 	ssh $(TGT) 'export LD_LIBRARY_PATH="/home/sym"; taskset -c 0 ./memcached $(TGT_FLAGS)' &
 	sleep 1
 
+DYNAM_L0="../Apps/libs/symlib/dynam_build/L0/sym_lib.o"
+KALLSYMLIB="../Apps/libs/kallsymlib/kallsymlib.o"
+
+sc_lib.so: sc_lib.c 
+	gcc -shared -fPIC -o $@ -L./$(DYNAM_L0) $< $(DYNAM_L0)
+
+build_interpose_test:
+	gcc test.c -o test
+
+test_interpose: sc_lib.so
+	time (LD_LIBRARY_PATH=$(PWD) LD_PRELOAD=./$< ./test)
+
+clean_lib:
+	rm -f sc_lib.so test
 #TEST TARGET
 
 stress_server:
