@@ -3,7 +3,7 @@ MEMTIER=../memtier_benchmark/memtier_benchmark
 MEMCACHED=../memcached/
 MEMCACHED_APP=../memcached/memcached
 SYS_MAP=../System.map-5.14.0-symbiote+
-TGT=192.168.122.233
+TGT=192.168.122.214
 TGT_FLAGS=-t 1 -m 3072 -p 18080 -l $(TGT)
 
 all:
@@ -62,6 +62,7 @@ init_server:$(MEMCACHED_APP)
 	ssh $(TGT) 'export LD_LIBRARY_PATH="/home/sym"; taskset -c 0 ./memcached $(TGT_FLAGS)' &
 	sleep 1
 
+
 DYNAM_L0="../Apps/libs/symlib/dynam_build/L0/sym_lib.o"
 KALLSYMLIB="../Apps/libs/kallsymlib/kallsymlib.o"
 
@@ -77,6 +78,12 @@ test_interpose: sc_lib.so
 clean_lib:
 	rm -f sc_lib.so test
 #TEST TARGET
+
+mitigate:
+	./../Apps/bin/recipes/mitigate_all.sh
+
+run_memcached: mitigate sc_lib.so
+	taskset -c 0 sh -c 'LD_LIBRARY_PATH=$(PWD) LD_PRELOAD=./sc_lib.so ./memcached -t $(THREADS) -m 3072 -p 18080 -l $(TGT)'
 
 stress_server:
 	./$(MEMTIER) -t $(THREADS) -s $(TGT) -p 18080 -n 10000 -P memcache_text -t 10 -n 10000 --hdr-file-prefix $(TEST_INFO)baseline 
