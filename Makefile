@@ -3,7 +3,7 @@ MEMTIER=../memtier_benchmark/memtier_benchmark
 MEMCACHED=../memcached/
 MEMCACHED_APP=../memcached/memcached
 SYS_MAP=../System.map-5.14.0-symbiote+
-TGT=192.168.122.214
+TGT=192.168.122.156
 TGT_FLAGS=-t 1 -m 3072 -p 18080 -l $(TGT)
 
 all:
@@ -75,6 +75,10 @@ build_interpose_test:
 test_interpose: sc_lib.so
 	time (LD_LIBRARY_PATH=$(PWD) LD_PRELOAD=./$< ./test)
 
+test_vanilla:
+	which time
+	time ./test
+
 clean_lib:
 	rm -f sc_lib.so test
 #TEST TARGET
@@ -90,6 +94,12 @@ run_memcached_sc: mitigate sc_lib.so
 
 run_memcached_sc_multicore:
 	LD_LIBRARY_PATH=$(PWD) LD_PRELOAD=./sc_lib.so ./memcached -t $(THREADS) -m 3072 -p 18080 -l $(TGT)
+
+run_redis:
+	taskset -c 0 ./../redis/src/redis-server --protected-mode no --save '' --appendonly no
+
+run_redis_sc:
+	taskset -c 0 sh -c 'LD_LIBRARY_PATH=$(PWD) LD_PRELOAD=./sc_lib.so ./../redis/src/redis-server --protected-mode no --save '' --appendonly no'
 
 stress_server:
 	./$(MEMTIER) -t $(THREADS) -s $(TGT) -p 18080 -n 10000 -P memcache_text -t 10 -n 10000 --hdr-file-prefix $(TEST_INFO)baseline 
