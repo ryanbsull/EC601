@@ -82,8 +82,14 @@ clean_lib:
 mitigate:
 	./../Apps/bin/recipes/mitigate_all.sh
 
-run_memcached: mitigate sc_lib.so
+run_memcached:
+	taskset -c 0 ./memcached -t $(THREADS) -m 3072 -p 18080 -l $(TGT)
+
+run_memcached_sc: mitigate sc_lib.so
 	taskset -c 0 sh -c 'LD_LIBRARY_PATH=$(PWD) LD_PRELOAD=./sc_lib.so ./memcached -t $(THREADS) -m 3072 -p 18080 -l $(TGT)'
+
+run_memcached_sc_multicore:
+	LD_LIBRARY_PATH=$(PWD) LD_PRELOAD=./sc_lib.so ./memcached -t $(THREADS) -m 3072 -p 18080 -l $(TGT)
 
 stress_server:
 	./$(MEMTIER) -t $(THREADS) -s $(TGT) -p 18080 -n 10000 -P memcache_text -t 10 -n 10000 --hdr-file-prefix $(TEST_INFO)baseline 
