@@ -67,9 +67,10 @@ DYNAM_L0="../Apps/libs/symlib/dynam_build/L0/sym_lib.o"
 KALLSYMLIB="../Apps/libs/kallsymlib/kallsymlib.o"
 
 sc_lib.so: sc_lib.c 
+	make -C ../Apps/libs/symlib dynam_L0
 	gcc -shared -fPIC -o $@ -L./$(DYNAM_L0) $< $(DYNAM_L0)
 
-build_interpose_test:
+build_test:
 	gcc test.c -o test
 
 test_interpose: sc_lib.so
