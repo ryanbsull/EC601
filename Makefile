@@ -63,12 +63,13 @@ init_server:$(MEMCACHED_APP)
 	sleep 1
 
 
-DYNAM_L0="../Apps/libs/symlib/dynam_build/L0/sym_lib.o"
 KALLSYMLIB="../Apps/libs/kallsymlib/kallsymlib.o"
+SYMLIB_DIR=../Symlib
+SYMLIB_INCLUDE_DIR=$(SYMLIB_DIR)/include
+SYMLIB_LINK=../Symlib/dynam_build/libSym.so
 
 sc_lib.so: sc_lib.c 
-	make -C ../Apps/libs/symlib dynam_L0
-	gcc -shared -fPIC -o $@ -L./$(DYNAM_L0) $< $(DYNAM_L0)
+	gcc -shared -fPIC -o $@ -L./$(SYMLIB_LINK) $< -I $(SYMLIB_INCLUDE_DIR)
 
 build_test:
 	gcc test.c -o test
@@ -85,13 +86,13 @@ clean_lib:
 #TEST TARGET
 
 mitigate:
-	./../Apps/bin/recipes/mitigate_all.sh
+	./../Tools/bin/recipes/mitigate_all.sh
 
 run_memcached:
 	taskset -c 0 ./memcached -t $(THREADS) -m 3072 -p 18080 -l $(TGT)
 
 run_memcached_sc: mitigate sc_lib.so
-	taskset -c 0 sh -c 'LD_LIBRARY_PATH=$(PWD) LD_PRELOAD=./sc_lib.so ./memcached -t $(THREADS) -m 3072 -p 18080 -l $(TGT)'
+	taskset -c 0 sh -c 'LD_PRELOAD=./../Tools/bin/shortcut/sc_lib.so ./memcached -t $(THREADS) -m 3072 -p 18080 -l $(TGT)'
 
 # Expected to crash TODO: fix core swapping mechanism when elevated
 run_memcached_sc_multicore:
