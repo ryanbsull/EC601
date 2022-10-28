@@ -118,11 +118,13 @@ run_redis_sc:
 	taskset -c 0 sh -c 'LD_LIBRARY_PATH=$(PWD) LD_PRELOAD=./sc_lib.so ./../redis/src/redis-server --protected-mode no --save '' --appendonly no'
 
 stress_server:
-	./$(MEMTIER) -t $(THREADS) -s $(TGT) -p 18080 -n 10000 -P memcache_text -t 10 -n 10000 --hdr-file-prefix $(TEST_INFO)baseline 
+	memtier_benchmark -t $(THREADS) -s $(TGT) -p 18080 -n 10000 -P memcache_text -t 10 -n 10000 --hdr-file-prefix $(TEST_INFO)baseline 
 
 kill_server:
 	ssh $(TGT) "killall memcached"
 	ssh $(TGT) "rm -f ~/memcached"
 
 #test: tgt_info build_app app_info init_server stress_server kill_server
-test: tgt_info build_app app_info stress_server
+test: tgt_info stress_server
+test_lan: 
+	make test TGT=$(SERVER_LAN_IP)
