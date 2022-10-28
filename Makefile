@@ -5,13 +5,21 @@ MEMCACHED_APP=../memcached/memcached
 SYS_MAP=../System.map-5.14.0-symbiote+
 TGT=192.168.122.156
 TGT_FLAGS=-t 1 -m 3072 -p 18080 -l $(TGT)
+APP_INFO=info/app/
+SYS_INFO=info/tgt_sys/
+TEST_INFO=info/baseline/
+SERVER_LAN_DEV=enp0s20f0u1
+SERVER_LAN_IP=192.183.0.1
+CLIENT_LAN_IP=192.183.0.2
 
 all:
 	@echo you wouldnt run a makefile without reading it, right?
 
-APP_INFO=info/app/
-SYS_INFO=info/tgt_sys/
-TEST_INFO=info/baseline/
+connect_lan:
+	sudo ip link set $(SERVER_LAN_DEV) down
+	sudo ip addr flush $(SERVER_LAN_DEV)
+	sudo ip addr add $(SERVER_LAN_IP) dev $(SERVER_LAN_DEV)
+	sudo ip link set $(SERVER_LAN_DEV) up
 
 info:
 	mkdir -p $(SYS_INFO)
