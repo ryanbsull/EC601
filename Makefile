@@ -9,17 +9,22 @@ APP_INFO=info/app/
 SYS_INFO=info/tgt_sys/
 TEST_INFO=info/baseline/
 SERVER_LAN_DEV=enp0s20f0u1
+CLIENT_LAN_DEV=enp58s0u1
 SERVER_LAN_IP=192.183.0.1
 CLIENT_LAN_IP=192.183.0.2
 
 all:
 	@echo you wouldnt run a makefile without reading it, right?
 
-connect_lan:
+connect_server:
 	sudo ip link set $(SERVER_LAN_DEV) down
 	sudo ip addr flush $(SERVER_LAN_DEV)
-	sudo ip addr add $(SERVER_LAN_IP) dev $(SERVER_LAN_DEV)
+	sudo ip addr add $(SERVER_LAN_IP)/24 dev $(SERVER_LAN_DEV)
 	sudo ip link set $(SERVER_LAN_DEV) up
+
+
+connect_client:
+	make connect_server SERVER_LAN_IP=$(CLIENT_LAN_IP) SERVER_LAN_DEV=$(CLIENT_LAN_DEV)
 
 info:
 	mkdir -p $(SYS_INFO)
