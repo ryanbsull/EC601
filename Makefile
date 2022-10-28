@@ -107,6 +107,12 @@ run_memcached:
 run_memcached_sc: mitigate sc_lib.so
 	taskset -c 0 sh -c 'LD_PRELOAD=./../Tools/bin/shortcut/sc_lib.so ./memcached -t $(THREADS) -m 3072 -p 18080 -l $(TGT)'
 
+run_memcached_lan:
+	make run_memcached TGT=$(SERVER_LAN_IP)
+
+run_memcached_sc_lan: 
+	make run_memcached_sc TGT=$(SERVER_LAN_IP)
+
 # Expected to crash TODO: fix core swapping mechanism when elevated
 run_memcached_sc_multicore:
 	LD_LIBRARY_PATH=$(PWD) LD_PRELOAD=./sc_lib.so ./memcached -t $(THREADS) -m 3072 -p 18080 -l $(TGT)
