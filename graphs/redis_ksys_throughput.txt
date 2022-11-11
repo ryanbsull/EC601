@@ -1,0 +1,7 @@
+BAREMETAL SHORTCUTTED REDIS THROUGHPUT
+
+Run #      Throughput (KB/s)
+-------  -------------------
+run0                 9372.68
+run1                 9354.71
+run2                 6913.21

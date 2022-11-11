@@ -1,7 +1,6 @@
-VIRTUALIZED MEMCACHED THROUGHPUT
+BAREMETAL MEMCACHED THROUGHPUT
 
 Run #      Throughput (KB/s)
 -------  -------------------
-run0                 6584.73
-run1                 6831.51
-run2                 6624.88
+run0                 6831.51
+run1                 6624.88

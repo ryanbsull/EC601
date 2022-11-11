@@ -1,4 +1,4 @@
-VIRTUALIZED MEMCACHED THROUGHPUT
+VIRTUALIZED SHORTCUTTED MEMCACHED THROUGHPUT
 
 Run #      Throughput (KB/s)
 -------  -------------------

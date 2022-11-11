@@ -1,4 +1,4 @@
-VIRTUALIZED MEMCACHED THROUGHPUT
+BAREMETAL SHORTCUTTED MEMCACHED THROUGHPUT
 
 Run #      Throughput (KB/s)
 -------  -------------------
