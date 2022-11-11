@@ -126,11 +126,18 @@ run_redis_sc:
 stress_server:
 	memtier_benchmark -t $(THREADS) -s $(TGT) -p 18080 -n 10000 -P memcache_text -t 10 -n 10000 --hdr-file-prefix $(TEST_INFO)baseline 
 
+stress_server_redis:
+	memtier_benchmark -s $(TGT) -n 10000 --hdr-file-prefix $(TEST_INFO)baseline
+
+
 kill_server:
 	ssh $(TGT) "killall memcached"
 	ssh $(TGT) "rm -f ~/memcached"
 
 #test: tgt_info build_app app_info init_server stress_server kill_server
 test: tgt_info stress_server
+test_redis: tgt_info stress_server_redis
 test_lan: 
 	make test TGT=$(SERVER_LAN_IP)
+test_lan_redis: 
+	make test_redis TGT=$(SERVER_LAN_IP)
