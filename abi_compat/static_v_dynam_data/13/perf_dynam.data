@@ -1,0 +1,15 @@
+          3,790.54 msec task-clock                #    1.000 CPUs utilized          
+                24      context-switches          #    6.332 /sec                   
+                 1      cpu-migrations            #    0.264 /sec                   
+               245      page-faults               #   64.635 /sec                   
+    13,299,452,112      cycles                    #    3.509 GHz                    
+    23,727,795,981      instructions              #    1.78  insn per cycle         
+     4,644,819,278      branches                  #    1.225 G/sec                  
+            63,693      branch-misses             #    0.00% of all branches        
+
+       3.791365639 seconds time elapsed
+
+       1.095704000 seconds user
+       2.690865000 seconds sys
+
+
