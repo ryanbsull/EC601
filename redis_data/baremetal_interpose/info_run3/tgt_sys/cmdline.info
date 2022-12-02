@@ -1,0 +1,1 @@
+BOOT_IMAGE=served_files/vmlinuz-5.14.0-symbiote_enabled initrd=served_files/symbiote-initrd.cpio.gz console=tty1,115200 console=ttyS0,115200 nr_cpus=16 intel_idle.max_cstate=0 processor.max_cstate=0 ip=192.168.19.35:::255.255.255.0::eth0:none root=/dev/ram0 nosmep nosmap mitigations=off
